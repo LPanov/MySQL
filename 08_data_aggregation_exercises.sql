@@ -157,39 +157,6 @@ FROM
 WHERE
     manager_id IS NULL;
     
--- 16 3rd Highest Salary
-SELECT 
-    department_id, MAX(salary)
-FROM
-    employees e1
-WHERE
-    3 = (SELECT 
-            COUNT(DISTINCT salary)
-        FROM
-            employees e2
-        WHERE
-            e2.department_id = e1.department_id
-                AND e2.salary >= e1.salary)
-GROUP BY department_id
-ORDER BY department_id;
-
--- 17 Salary Challenge
-SELECT 
-    first_name, last_name, department_id
-FROM
-    employees e1
-WHERE
-    (SELECT 
-            AVG(salary) AS avg_salary
-        FROM
-            employees e2
-        GROUP BY department_id
-        HAVING e1.salary > avg_salary
-            AND e1.department_id = e2.department_id
-        LIMIT 1)
-ORDER BY department_id , employee_id
-LIMIT 10;
-
 -- 18 Departments Total Salaries
 SELECT 
     department_id, SUM(salary) AS total_salary
